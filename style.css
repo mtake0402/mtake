@@ -1,0 +1,395 @@
+/* ========================================
+   星読みの導き - スタイルシート
+   ======================================== */
+
+:root {
+  --bg: #080c20;
+  --bg-2: #0e1438;
+  --surface: #141b40;
+  --surface-light: #1c2550;
+  --ink: #f0e6d2;
+  --ink-muted: #a09888;
+  --accent: #d4af37;
+  --accent-dim: color-mix(in oklab, var(--accent) 30%, var(--bg));
+  --accent-glow: color-mix(in oklab, var(--accent) 40%, transparent);
+  --purple: #7c5cff;
+  --purple-dim: color-mix(in oklab, var(--purple) 25%, var(--bg));
+  --star: #fff8db;
+  --line: color-mix(in oklab, var(--ink) 10%, transparent);
+  --shadow: 0 4px 24px rgba(0,0,0,0.5), 0 0 40px -10px var(--accent-glow);
+  --radius: 18px;
+  --step-0: clamp(0.95rem, 0.9rem + 0.25vw, 1.1rem);
+  --step-1: clamp(1.1rem, 1rem + 0.5vw, 1.4rem);
+  --step-2: clamp(1.5rem, 1.2rem + 1.2vw, 2.2rem);
+  --step-3: clamp(2rem, 1.5rem + 2vw, 3.2rem);
+  --step-4: clamp(2.5rem, 1.8rem + 3vw, 4.5rem);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: var(--step-0);
+  line-height: 1.8;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== 星空背景 ===== */
+#starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ===== レイアウト ===== */
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 2.5rem);
+}
+
+header {
+  text-align: center;
+  padding: clamp(3rem, 10vh, 7rem) 1rem clamp(2rem, 5vh, 4rem);
+}
+
+header h1 {
+  font-family: "Cinzel", "Hiragino Sans", serif;
+  font-size: var(--step-4);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-shadow: 0 0 30px var(--accent-glow), 0 0 80px var(--accent-glow);
+  line-height: 1.2;
+}
+
+header .subtitle {
+  margin-top: 0.8rem;
+  color: var(--ink-muted);
+  font-size: var(--step-1);
+  letter-spacing: 0.15em;
+}
+
+header .date-today {
+  margin-top: 1.2rem;
+  display: inline-block;
+  padding: 0.4rem 1.4rem;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--accent);
+  font-family: "Cinzel", serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+}
+
+/* ===== 星座グリッド ===== */
+.zodiac-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: clamp(0.8rem, 2vw, 1.2rem);
+  padding: 2rem 0 4rem;
+}
+
+.zodiac-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.6rem 1rem 1.4rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  overflow: hidden;
+}
+
+.zodiac-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, var(--accent-dim), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.zodiac-card:hover,
+.zodiac-card:focus-visible {
+  transform: translateY(-6px);
+  border-color: color-mix(in oklab, var(--accent) 50%, transparent);
+  box-shadow: var(--shadow);
+  outline: none;
+}
+
+.zodiac-card:hover::before,
+.zodiac-card:focus-visible::before {
+  opacity: 1;
+}
+
+.zodiac-card .icon-wrap {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 0.8rem;
+  display: grid;
+  place-items: center;
+}
+
+.zodiac-card svg {
+  width: 52px;
+  height: 52px;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.3s ease, filter 0.3s ease;
+}
+
+.zodiac-card:hover svg,
+.zodiac-card:focus-visible svg {
+  stroke: #ffeaa7;
+  filter: drop-shadow(0 0 6px var(--accent));
+}
+
+.zodiac-card .name {
+  position: relative;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.05em;
+}
+
+.zodiac-card .date-range {
+  position: relative;
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  margin-top: 0.2rem;
+  font-family: "Cinzel", serif;
+}
+
+/* ===== 結果パネル ===== */
+.result-panel {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  margin-bottom: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.result-panel.active {
+  display: block;
+  animation: fadeUp 0.6s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.result-panel::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 60%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.result-header {
+  text-align: center;
+  margin-bottom: 1.8rem;
+}
+
+.result-header .result-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: var(--bg-2);
+  border: 1.5px solid color-mix(in oklab, var(--accent) 40%, transparent);
+  display: grid;
+  place-items: center;
+}
+
+.result-header .result-icon svg {
+  width: 48px;
+  height: 48px;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.result-header h2 {
+  font-family: "Cinzel", serif;
+  font-size: var(--step-2);
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+
+.result-header .result-date {
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+/* 星評価 */
+.stars {
+  display: inline-flex;
+  gap: 0.25rem;
+  vertical-align: middle;
+}
+
+.star-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: var(--accent);
+  opacity: 0.25;
+  transition: opacity 0.4s ease;
+}
+
+.star-icon.on {
+  opacity: 1;
+  filter: drop-shadow(0 0 4px var(--accent-glow));
+}
+
+/* 運勢スコアグリッド */
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.8rem;
+}
+
+.score-item {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.score-label {
+  font-weight: 500;
+  color: var(--ink-muted);
+  font-size: 0.92rem;
+}
+
+.score-value {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* メッセージカード */
+.message-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.message-card h3 {
+  font-size: 0.9rem;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.08em;
+  font-family: "Cinzel", serif;
+}
+
+.message-card p {
+  color: var(--ink);
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.lucky-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.lucky-item {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.9rem;
+  text-align: center;
+}
+
+.lucky-item .lucky-label {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+}
+
+.lucky-item .lucky-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* 閉じるボタン */
+.close-btn {
+  display: block;
+  margin: 1.5rem auto 0;
+  padding: 0.6rem 2rem;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.close-btn:hover,
+.close-btn:focus-visible {
+  background: var(--accent);
+  color: var(--bg);
+  outline: none;
+}
+
+/* フッタ */
+footer {
+  text-align: center;
+  padding: 3rem 1rem 2rem;
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* print */
+@media print {
+  body { background: #fff; color: #000; }
+  #starfield, .close-btn { display: none; }
+  .result-panel { display: block !important; page-break-inside: avoid; }
+}

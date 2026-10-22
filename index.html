@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星読みの導き - 星座占い</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- スタイルシート -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 星空背景キャンバス -->
+<canvas id="starfield"></canvas>
+
+<div class="container">
+  <!-- ヘッダー -->
+  <header>
+    <h1>星読みの導き</h1>
+    <p class="subtitle">星座から紐解く、今日の運命の糸</p>
+    <div class="date-today" id="dateToday"></div>
+  </header>
+
+  <!-- 星座カードグリッド -->
+  <div class="zodiac-grid" id="zodiacGrid"></div>
+
+  <!-- 結果表示パネル -->
+  <div class="result-panel" id="resultPanel" tabindex="-1">
+    <div class="result-header">
+      <div class="result-icon" id="resultIcon"></div>
+      <h2 id="resultTitle"></h2>
+      <p class="result-date" id="resultDate"></p>
+    </div>
+
+    <!-- 運勢スコア -->
+    <div class="score-grid">
+      <div class="score-item">
+        <span class="score-label">総合運</span>
+        <span class="score-value" id="scoreTotal"></span>
+      </div>
+      <div class="score-item">
+        <span class="score-label">恋愛運</span>
+        <span class="score-value" id="scoreLove"></span>
+      </div>
+      <div class="score-item">
+        <span class="score-label">仕事運</span>
+        <span class="score-value" id="scoreWork"></span>
+      </div>
+      <div class="score-item">
+        <span class="score-label">金運</span>
+        <span class="score-value" id="scoreMoney"></span>
+      </div>
+      <div class="score-item">
+        <span class="score-label">健康運</span>
+        <span class="score-value" id="scoreHealth"></span>
+      </div>
+    </div>
+
+    <!-- メッセージカード -->
+    <div class="message-card">
+      <h3>今日のメッセージ</h3>
+      <p id="messageText"></p>
+    </div>
+
+    <div class="message-card">
+      <h3>恋愛のヒント</h3>
+      <p id="loveText"></p>
+    </div>
+
+    <div class="message-card">
+      <h3>仕事・学業のヒント</h3>
+      <p id="workText"></p>
+    </div>
+
+    <!-- ラッキー情報 -->
+    <div class="lucky-grid">
+      <div class="lucky-item">
+        <div class="lucky-label">ラッキーナンバー</div>
+        <div class="lucky-value" id="luckyNumber"></div>
+      </div>
+      <div class="lucky-item">
+        <div class="lucky-label">ラッキーカラー</div>
+        <div class="lucky-value" id="luckyColor"></div>
+      </div>
+      <div class="lucky-item">
+        <div class="lucky-label">ラッキーアイテム</div>
+        <div class="lucky-value" id="luckyItem"></div>
+      </div>
+      <div class="lucky-item">
+        <div class="lucky-label">相性のええ星座</div>
+        <div class="lucky-value" id="compatible"></div>
+      </div>
+    </div>
+
+    <!-- 閉じるボタン -->
+    <button class="close-btn" id="closeBtn">閉じる</button>
+  </div>
+
+  <!-- フッター -->
+  <footer>
+    <p>星読みの導き &copy; 占いは娯楽やで。気ぃ楽にいこな。</p>
+  </footer>
+</div>
+
+<!-- JavaScript -->
+<script src="script.js"></script>
+</body>
+</html>
